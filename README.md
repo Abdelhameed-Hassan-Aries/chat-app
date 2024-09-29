@@ -70,12 +70,7 @@ This installs the server dependencies listed in `server/package.json`.
 
 - Sign up at [OpenAI](https://platform.openai.com/) if you haven't already.
 - Navigate to the **API Keys** section and generate a new key.
-- In the `server` directory, you'll find a `.env.example` file.
-- **Copy** `.env.example` to `.env`:
-
-  ```bash
-  cp server/.env.example server/.env
-  ```
+- In the `server` directory, you'll find a `.env` file.
 
 - Open the `.env` file and add your API key:
 
