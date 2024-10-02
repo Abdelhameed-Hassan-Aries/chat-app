@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
   if (req.method !== "POST") {
     res.status(405).json({ error: "Only POST requests are allowed." });
     return;
