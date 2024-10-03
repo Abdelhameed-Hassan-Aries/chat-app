@@ -33,9 +33,9 @@ function Chat() {
 
   const handleSend = async (initialMessage) => {
     const messageToSend = initialMessage || input;
-    if (messageToSend.trim() === "" || loading) return; // Prevent sending if loading or input is empty
+    if (messageToSend.trim() === "" || loading) return;
 
-    setLoading(true); // Set loading state to true
+    setLoading(true);
 
     const userMessage = { sender: "user", text: messageToSend };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
@@ -61,7 +61,6 @@ function Chat() {
       const data = await response.json();
       const botResponse = { sender: "bot", text: data.reply };
 
-      // Add the bot's response to the conversation
       setMessages((prevMessages) => [...prevMessages, botResponse]);
       addMessageToConversation(conversationId, botResponse);
     } catch (error) {
@@ -75,7 +74,7 @@ function Chat() {
       addMessageToConversation(conversationId, botResponse);
     } finally {
       setInput("");
-      setLoading(false); // Set loading state back to false
+      setLoading(false);
     }
   };
 
@@ -104,6 +103,9 @@ function Chat() {
         >
           {messages.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center">
+              <div className="text-2xl font-semibold mb-6 text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary">
+                How can I help you today?
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {suggestions.map((suggestion, index) => (
                   <button
@@ -163,7 +165,6 @@ function Chat() {
         </div>
       </div>
 
-      {/* Powered by OpenAI ChatGPT text */}
       <div className="text-center text-xs text-gray-500 dark:text-gray-400 pt-2 pb-4">
         Powered by OpenAI ChatGPT
       </div>
