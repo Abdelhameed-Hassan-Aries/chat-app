@@ -18,13 +18,14 @@ function Chat() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false); // New state for loading
+  const [currentTypingMessage, setCurrentTypingMessage] = useState(""); // State to hold the progressively typed bot message
 
   const messagesEndRef = useRef(null);
 
   // Scroll to the bottom of messages when new messages are added
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, currentTypingMessage]);
 
   useEffect(() => {
     const activeConversation = getActiveConversation();
@@ -59,11 +60,29 @@ function Chat() {
       });
 
       const data = await response.json();
-      const botResponse = { sender: "bot", text: data.reply };
+      const botResponseText = data.reply;
 
-      // Add the bot's response to the conversation
-      setMessages((prevMessages) => [...prevMessages, botResponse]);
-      addMessageToConversation(conversationId, botResponse);
+      // Set up the typewriter effect for the bot's response
+      setCurrentTypingMessage("");
+      let currentCharIndex = 0;
+
+      const typeNextChar = () => {
+        if (currentCharIndex < botResponseText.length) {
+          setCurrentTypingMessage(
+            (prev) => prev + botResponseText[currentCharIndex]
+          );
+          currentCharIndex++;
+          setTimeout(typeNextChar, 50); // Adjust the typing speed here (50ms per character)
+        } else {
+          // After the typing is done, add the bot's message to the conversation
+          const botMessage = { sender: "bot", text: botResponseText };
+          setMessages((prevMessages) => [...prevMessages, botMessage]);
+          addMessageToConversation(conversationId, botMessage);
+          setLoading(false);
+        }
+      };
+
+      typeNextChar(); // Start typing the bot response
     } catch (error) {
       console.error(error);
       const botResponse = {
@@ -73,9 +92,9 @@ function Chat() {
 
       setMessages((prevMessages) => [...prevMessages, botResponse]);
       addMessageToConversation(conversationId, botResponse);
+      setLoading(false);
     } finally {
       setInput("");
-      setLoading(false); // Set loading state back to false
     }
   };
 
@@ -120,17 +139,12 @@ function Chat() {
           ) : (
             <div className="space-y-4">
               {messages.map((msg, index) => (
-                <Message
-                  key={index}
-                  sender={msg.sender}
-                  text={msg.text}
-                  isLoading={
-                    loading &&
-                    msg.sender === "bot" &&
-                    index === messages.length - 1
-                  }
-                />
+                <Message key={index} sender={msg.sender} text={msg.text} />
               ))}
+              {/* Show the bot's message as it's being typed */}
+              {loading && (
+                <Message sender="bot" text={currentTypingMessage} isLoading />
+              )}
               <div ref={messagesEndRef} />
             </div>
           )}
