@@ -8,24 +8,24 @@ function Navbar() {
   const { startNewConversation } = useConversations();
 
   return (
-    <nav className="flex items-center justify-between px-4 py-2 bg-chatgpt-light-background dark:bg-chatgpt-dark-background">
+    <nav className="flex items-center justify-between px-4 bg-chatgpt-light-background dark:bg-chatgpt-dark-background h-16">
       <div className="flex items-center">
-        {!isOpen && (
-          <>
-            <button
-              onClick={toggleSidebar}
-              className="p-2 text-gray-700 dark:text-gray-300"
-            >
-              <FiMenu size={24} />
-            </button>
-            <button
-              onClick={startNewConversation}
-              className="ml-2 p-2 text-gray-700 dark:text-gray-300"
-            >
-              <FiPlus size={24} />
-            </button>
-          </>
-        )}
+        <button
+          onClick={toggleSidebar}
+          className={`p-2 text-gray-700 dark:text-gray-300 transition-opacity duration-300 ${
+            isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
+        >
+          <FiMenu size={24} />
+        </button>
+        <button
+          onClick={startNewConversation}
+          className={`ml-2 p-2 text-gray-700 dark:text-gray-300 transition-opacity duration-300 ${
+            isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
+        >
+          <FiPlus size={24} />
+        </button>
       </div>
       <ThemeToggle />
     </nav>

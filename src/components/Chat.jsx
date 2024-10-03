@@ -85,31 +85,33 @@ function Chat() {
   };
 
   return (
-    <div className="flex flex-col flex-1 bg-chatgpt-light-background dark:bg-chatgpt-dark-background">
-      {messages.length === 0 ? (
-        <div className="flex flex-col items-center justify-center flex-1 p-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {suggestions.map((suggestion, index) => (
-              <button
-                key={index}
-                onClick={() => startConversation(suggestion)}
-                className="p-4 bg-chatgpt-light-messageBgBot dark:bg-chatgpt-dark-messageBgBot rounded-lg shadow text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
-              >
-                {suggestion}
-              </button>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="flex-1 overflow-y-auto p-4">
-          {messages.map((msg, index) => (
-            <Message key={index} sender={msg.sender} text={msg.text} />
-          ))}
+    <div className="flex flex-col flex-1">
+      <div className="flex-1 overflow-y-auto p-4 flex justify-center">
+        <div className="w-full max-w-chat-container">
+          {messages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center flex-1 p-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {suggestions.map((suggestion, index) => (
+                  <button
+                    key={index}
+                    onClick={() => startConversation(suggestion)}
+                    className="p-4 bg-chatgpt-light-messageBgBot dark:bg-chatgpt-dark-messageBgBot rounded-lg shadow text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            messages.map((msg, index) => (
+              <Message key={index} sender={msg.sender} text={msg.text} />
+            ))
+          )}
           <div ref={messagesEndRef} />
         </div>
-      )}
-      <div className="p-4 bg-chatgpt-light-inputBg dark:bg-chatgpt-dark-inputBg">
-        <div className="flex">
+      </div>
+      <div className="p-4 bg-chatgpt-light-inputBg dark:bg-chatgpt-dark-inputBg flex justify-center">
+        <div className="w-full max-w-chat-container flex">
           <Input
             type="text"
             className="flex-1 rounded-l-md bg-chatgpt-light-inputBg dark:bg-chatgpt-dark-inputBg text-chatgpt-light-inputText dark:text-chatgpt-dark-inputText"

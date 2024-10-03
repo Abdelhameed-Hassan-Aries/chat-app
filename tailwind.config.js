@@ -21,6 +21,9 @@ module.exports = {
         "chatgpt-dark-messageBgUser": "#2A2B32",
         "chatgpt-dark-messageBgBot": "#444654",
       },
+      maxWidth: {
+        "chat-container": "800px",
+      },
     },
   },
   plugins: [],
