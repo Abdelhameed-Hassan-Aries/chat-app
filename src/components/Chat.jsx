@@ -87,7 +87,7 @@ function Chat() {
       <div className="flex-1 overflow-y-auto p-4 pt-20 pb-24 flex justify-center">
         <div className="w-full max-w-chat-container">
           {messages.length === 0 ? (
-            <div className="flex flex-col items-center justify-center flex-1 p-4">
+            <div className="h-full  flex flex-col items-center justify-center flex-1 p-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {suggestions.map((suggestion, index) => (
                   <button
@@ -101,9 +101,11 @@ function Chat() {
               </div>
             </div>
           ) : (
-            messages.map((msg, index) => (
-              <Message key={index} sender={msg.sender} text={msg.text} />
-            ))
+            <div className="overflow-y-auto">
+              {messages.map((msg, index) => (
+                <Message key={index} sender={msg.sender} text={msg.text} />
+              ))}
+            </div>
           )}
           <div ref={messagesEndRef} />
         </div>
