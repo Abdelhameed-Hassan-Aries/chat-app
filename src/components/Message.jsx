@@ -3,11 +3,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "./ui/Avatar";
 function Message({ sender, text }) {
   const isUser = sender === "user";
   return (
-    <div
-      className={`flex ${
-        isUser ? "justify-end" : "justify-start"
-      } mb-4 items-end`}
-    >
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}>
       {!isUser && (
         <Avatar className="w-8 h-8 mr-2">
           <AvatarImage src="/bot-avatar.png" alt="Bot" />
@@ -16,7 +12,9 @@ function Message({ sender, text }) {
       )}
       <div
         className={`rounded-lg px-4 py-2 max-w-xs ${
-          isUser ? "bg-blue-500 text-white" : "bg-gray-300 text-gray-800"
+          isUser
+            ? "bg-chatgpt-light-messageBgUser dark:bg-chatgpt-dark-messageBgUser text-chatgpt-light-text dark:text-chatgpt-dark-text"
+            : "bg-chatgpt-light-messageBgBot dark:bg-chatgpt-dark-messageBgBot text-chatgpt-light-text dark:text-chatgpt-dark-text"
         }`}
       >
         {text}
