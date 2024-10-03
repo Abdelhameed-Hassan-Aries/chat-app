@@ -24,7 +24,7 @@ function Message({ sender, text, isLoading }) {
       {/* Message content (User or Bot) */}
       {isUser ? (
         <div
-          className={`rounded-lg px-4 py-2 text-left shadow-md bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary`}
+          className={`max-w-screen-sm rounded-lg px-4 py-2 text-left shadow-md bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary`}
         >
           {text}
         </div>
