@@ -95,7 +95,6 @@ function Chat() {
 
   return (
     <div className="flex flex-col h-screen bg-chatgpt-light-main-surface-primary dark:bg-chatgpt-dark-main-surface-primary">
-      {/* Message list container */}
       <div className="flex-1 overflow-y-auto p-4 pt-20 pb-24">
         <div
           className={clsx(
@@ -131,13 +130,13 @@ function Chat() {
                   }
                 />
               ))}
-              {/* Show loading dots when waiting for the bot's response */}
               {loading && <Message sender="bot" isLoading />}
               <div ref={messagesEndRef} />
             </div>
           )}
         </div>
       </div>
+
       {/* Input area */}
       <div className="bottom-0 left-0 right-0 p-4 bg-chatgpt-light-main-surface-primary dark:bg-chatgpt-dark-main-surface-primary">
         <div className="p-2 w-full max-w-chat-container mx-auto flex items-center bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary rounded-3xl">
@@ -149,12 +148,12 @@ function Chat() {
             onKeyDown={(e) => (e.key === "Enter" ? handleSend() : null)}
             placeholder="Type your message..."
             style={{ height: "40px", padding: "6px" }}
-            disabled={loading} // Disable input while loading
+            disabled={loading}
           />
           <Button
             className="w-8 h-8 m-1"
             onClick={() => handleSend()}
-            disabled={input.trim() === "" || loading} // Disable button while loading
+            disabled={input.trim() === "" || loading}
           >
             <FaCircleArrowUp
               size={32}
@@ -162,6 +161,11 @@ function Chat() {
             />
           </Button>
         </div>
+      </div>
+
+      {/* Powered by OpenAI ChatGPT text */}
+      <div className="text-center text-xs text-gray-500 dark:text-gray-400 pt-2 pb-4">
+        Powered by OpenAI ChatGPT
       </div>
     </div>
   );
