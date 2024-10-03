@@ -21,6 +21,7 @@ function Message({ sender, text, isLoading }) {
         </Avatar>
       )}
 
+      {/* Message content (User or Bot) */}
       {isUser ? (
         <div
           className={`rounded-lg px-4 py-2 max-w-xs text-left shadow-md bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary`}

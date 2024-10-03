@@ -17,7 +17,7 @@ function Chat() {
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false); // New state for loading
+  const [loading, setLoading] = useState(false);
 
   const messagesEndRef = useRef(null);
 
@@ -131,6 +131,8 @@ function Chat() {
                   }
                 />
               ))}
+              {/* Show loading dots when waiting for the bot's response */}
+              {loading && <Message sender="bot" isLoading />}
               <div ref={messagesEndRef} />
             </div>
           )}
