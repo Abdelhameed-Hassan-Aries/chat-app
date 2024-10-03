@@ -23,6 +23,7 @@ A sleek, modern chat application that mimics the functionality of ChatGPT, built
 - **Modern Styling**: Uses Tailwind CSS and shadcn components for a sleek look.
 - **Avatar Support**: Displays user and bot avatars with fallback options.
 - **Light-Dark Mode Themes**: Users can toggle between light and dark themes.
+- **Presistant History Data**: Chats are saved in storage local host.
 - **Powered by Vercel Functions**: Serverless API requests for OpenAI.
 
 ---
