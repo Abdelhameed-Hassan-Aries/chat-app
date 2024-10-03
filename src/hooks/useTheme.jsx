@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 function useTheme() {
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
 
   useEffect(() => {
     const root = window.document.documentElement;
