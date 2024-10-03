@@ -1,6 +1,6 @@
 # Chat Application powered by OpenAI
 
-A sleek, modern chat application that mimics the functionality of ChatGPT, built with **React**, **Tailwind CSS**, and **shadcn UI components**. This app integrates with the **OpenAI API** to provide AI-powered responses in a conversational interface.
+A sleek, modern chat application that mimics the functionality of ChatGPT, built with **React**, **Tailwind CSS**, and **shadcn UI components**. This app integrates with the **OpenAI API** to provide AI-powered responses in a conversational interface and includes **light-dark mode themes**.
 
 ## Table of Contents
 
@@ -22,6 +22,8 @@ A sleek, modern chat application that mimics the functionality of ChatGPT, built
 - **Responsive Design**: Optimized for both desktop and mobile devices.
 - **Modern Styling**: Uses Tailwind CSS and shadcn components for a sleek look.
 - **Avatar Support**: Displays user and bot avatars with fallback options.
+- **Light-Dark Mode Themes**: Users can toggle between light and dark themes.
+- **Powered by Vercel Functions**: Serverless API requests for OpenAI.
 
 ---
 
@@ -44,35 +46,19 @@ cd chat-app
 
 ### 2. Install Dependencies
 
-#### a. Install Client Dependencies
-
 From the root directory (`chat-app`), run:
 
 ```bash
 npm install
 ```
 
-This command installs the client dependencies listed in the root `package.json` file.
-
-#### b. Install Server Dependencies
-
-Navigate to the `server` directory and install its dependencies:
-
-```bash
-cd server
-npm install
-cd ..
-```
-
-This installs the server dependencies listed in `server/package.json`.
+This command installs the necessary dependencies listed in the `package.json` file.
 
 ### 3. Set Up OpenAI API Key
 
 - Sign up at [OpenAI](https://platform.openai.com/) if you haven't already.
 - Navigate to the **API Keys** section and generate a new key.
-- In the `server` directory, you'll find a `.env` file.
-
-- Open the `.env` file and add your API key:
+- In the root directory, create a `.env.local` file and add your OpenAI API key:
 
   ```env
   OPENAI_API_KEY=your_openai_api_key_here
@@ -80,16 +66,32 @@ This installs the server dependencies listed in `server/package.json`.
 
   _Ensure that you replace `your_openai_api_key_here` with your actual API key._
 
-### 4. Start the Application
+### 4. Run the Application Locally
 
-To run the client and server concurrently, from the root directory (`chat-app`), use:
+To run the client and Vercel functions (API) locally:
 
-```bash
-npm start
-```
+1. Start the Vercel functions locally using Vercel CLI:
 
-- The server will run on `http://localhost:5000`.
+   - Install the Vercel CLI if you haven't:
+
+     ```bash
+     npm install -g vercel
+     ```
+
+   - Run the Vercel function in development mode:
+
+     ```bash
+     vercel dev
+     ```
+
+2. In another terminal, run the client app using:
+
+   ```bash
+   npm run dev
+   ```
+
 - The client app will run on `http://localhost:5173`.
+- The Vercel function (API) will run on `http://localhost:3000/api`.
 
 ---
 
@@ -104,24 +106,12 @@ npm start
 
 ## Scripts
 
-The following scripts are available in the root `package.json` file:
+The following scripts are available in the `package.json` file:
 
-- **Run the Client Only**:
+- **Run the Client and Vercel Functions**:
 
   ```bash
   npm run dev
-  ```
-
-- **Run the Server Only**:
-
-  ```bash
-  npm run start:server
-  ```
-
-- **Run Both Client and Server Concurrently**:
-
-  ```bash
-  npm start
   ```
 
 - **Build the Client for Production**:
@@ -150,10 +140,9 @@ The following scripts are available in the root `package.json` file:
 - **Vite**: Fast frontend build tool for web development.
 - **Tailwind CSS**: Utility-first CSS framework for rapid UI development.
 - **shadcn Components**: Pre-built, styled components for React and Tailwind CSS.
-- **Express.js**: Web framework for Node.js.
+- **Vercel Functions**: Serverless functions for handling backend logic and API requests.
 - **OpenAI API**: AI models for generating responses.
 - **dotenv**: Module to load environment variables.
-- **cors**: Middleware for enabling Cross-Origin Resource Sharing.
 - **Concurrently**: Utility to run multiple commands concurrently.
 
 ---
@@ -175,10 +164,10 @@ The following scripts are available in the root `package.json` file:
 │   │   └── index.css
 │   ├── package.json
 │   └── ...
-├── server
-│   ├── server.js
+├── api
+│   ├── chat.js   # Vercel Function for handling OpenAI requests
 │   ├── package.json
-│   ├── .env.example
+│   ├── .env.local  # API keys for local development
 ├── package.json
 ├── README.md
 └── ...
