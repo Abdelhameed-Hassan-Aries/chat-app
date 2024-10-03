@@ -1,8 +1,10 @@
+import { format } from "date-fns";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/Avatar";
 import { RiRobot2Fill } from "react-icons/ri";
 
-function Message({ sender, text, isLoading }) {
+function Message({ sender, text, isLoading, timestamp }) {
   const isUser = sender === "user";
+  const formattedTime = timestamp ? format(new Date(timestamp), "h:mm a") : "";
 
   return (
     <div
@@ -22,15 +24,10 @@ function Message({ sender, text, isLoading }) {
       )}
 
       {/* Message content (User or Bot) */}
-      {isUser ? (
+      <div className={`max-w-screen-sm`}>
         <div
-          className={`max-w-screen-sm rounded-lg px-4 py-2 text-left shadow-md bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary`}
+          className={`rounded-lg px-4 py-2 text-left shadow-md bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary`}
         >
-          {text}
-        </div>
-      ) : (
-        // Bot Message or Loading Dots
-        <div className="text-left text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary">
           {isLoading ? (
             <div className="flex items-center space-x-2 h-full">
               <span className="dot bg-gray-600 dark:bg-white"></span>
@@ -41,7 +38,15 @@ function Message({ sender, text, isLoading }) {
             text
           )}
         </div>
-      )}
+        {/* Display the formatted time below the message */}
+        <div
+          className={`text-xs text-gray-500 dark:text-gray-400 mt-1 ${
+            isUser ? "text-right" : "text-left"
+          }`}
+        >
+          {formattedTime}
+        </div>
+      </div>
     </div>
   );
 }

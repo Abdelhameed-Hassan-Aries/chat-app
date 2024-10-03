@@ -37,10 +37,13 @@ function Chat() {
 
     setLoading(true);
 
-    const userMessage = { sender: "user", text: messageToSend };
+    const userMessage = {
+      sender: "user",
+      text: messageToSend,
+      timestamp: new Date(),
+    };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-    // Create a new conversation if there is no activeConversationId
     let conversationId = activeConversationId;
     if (!conversationId) {
       const title = messageToSend.substring(0, 20);
@@ -48,7 +51,6 @@ function Chat() {
       conversationId = Date.now(); // Generate a unique ID for the new conversation
     }
 
-    // Add the user's message to the conversation
     addMessageToConversation(conversationId, userMessage);
 
     try {
@@ -59,7 +61,11 @@ function Chat() {
       });
 
       const data = await response.json();
-      const botResponse = { sender: "bot", text: data.reply };
+      const botResponse = {
+        sender: "bot",
+        text: data.reply,
+        timestamp: new Date(),
+      };
 
       setMessages((prevMessages) => [...prevMessages, botResponse]);
       addMessageToConversation(conversationId, botResponse);
@@ -68,6 +74,7 @@ function Chat() {
       const botResponse = {
         sender: "bot",
         text: "Sorry, there was an error processing your request.",
+        timestamp: new Date(),
       };
 
       setMessages((prevMessages) => [...prevMessages, botResponse]);
@@ -125,6 +132,7 @@ function Chat() {
                   key={index}
                   sender={msg.sender}
                   text={msg.text}
+                  timestamp={msg.timestamp}
                   isLoading={
                     loading &&
                     msg.sender === "bot" &&
