@@ -37,7 +37,7 @@ function Sidebar() {
             isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
-          <Tooltip text="Collapse Sidebar" position="bottom">
+          <Tooltip text="Collapse" position="right">
             <button
               onClick={toggleSidebar}
               className="p-2 text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md"

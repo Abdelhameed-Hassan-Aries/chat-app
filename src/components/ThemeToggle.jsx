@@ -10,7 +10,7 @@ function ThemeToggle() {
   };
 
   return (
-    <Tooltip text="Toggle Theme">
+    <Tooltip text="Toggle Theme" position="left">
       <button
         onClick={toggleTheme}
         className="p-2 text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md"

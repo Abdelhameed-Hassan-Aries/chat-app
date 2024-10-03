@@ -1,4 +1,3 @@
-// src/components/Navbar.jsx
 import { FiChevronRight } from "react-icons/fi";
 import { HiOutlineChatAlt } from "react-icons/hi";
 import ThemeToggle from "./ThemeToggle";
@@ -15,7 +14,7 @@ function Navbar() {
       <div className="flex items-center">
         {!isOpen && (
           <div className="flex">
-            <Tooltip text="Open Sidebar" position="bottom">
+            <Tooltip text="Expand" position="right">
               <button
                 onClick={toggleSidebar}
                 className="p-2 text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md"
