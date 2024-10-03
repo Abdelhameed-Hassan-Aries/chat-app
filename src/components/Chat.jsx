@@ -85,6 +85,13 @@ function Chat() {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
   const suggestions = [
     "What is the capital of France?",
     "Tell me a joke.",
@@ -149,19 +156,19 @@ function Chat() {
 
       {/* Input area */}
       <div className="bottom-0 left-0 right-0 p-4 bg-chatgpt-light-main-surface-primary dark:bg-chatgpt-dark-main-surface-primary">
-        <div className="p-2 w-full max-w-chat-container mx-auto flex items-center bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary rounded-3xl">
+        <div className="p-2 w-full max-w-chat-container mx-auto relative bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary rounded-3xl">
+          {/* Input Field */}
           <Input
-            type="text"
-            className="flex-1 bg-transparent text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary placeholder-chatgpt-light-text-placeholder dark:placeholder-chatgpt-dark-text-placeholder px-4 py-2"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => (e.key === "Enter" ? handleSend() : null)}
+            onKeyDown={handleKeyDown}
             placeholder="Type your message..."
-            style={{ height: "40px", padding: "6px" }}
             disabled={loading}
+            className="pr-12" // Add padding-right to avoid overlapping with the button
           />
+          {/* Submit Button */}
           <Button
-            className="w-8 h-8 m-1"
+            className="absolute bottom-2 right-2 w-8 h-8 m-1" // Position button absolutely
             onClick={() => handleSend()}
             disabled={input.trim() === "" || loading}
           >
