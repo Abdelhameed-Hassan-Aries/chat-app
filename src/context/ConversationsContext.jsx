@@ -5,12 +5,6 @@ const ConversationsContext = createContext();
 export function ConversationsProvider({ children }) {
   const [conversations, setConversations] = useState([]);
   const [activeConversationId, setActiveConversationId] = useState(null);
-  const [messages, setMessages] = useState([]);
-
-  const startNewConversation = () => {
-    setActiveConversationId(null);
-    setMessages([]);
-  };
 
   useEffect(() => {
     const storedConversations = JSON.parse(
@@ -23,42 +17,57 @@ export function ConversationsProvider({ children }) {
     localStorage.setItem("conversations", JSON.stringify(conversations));
   }, [conversations]);
 
-  const addConversation = (conversation) => {
-    setConversations((prev) => {
-      const existingIndex = prev.findIndex(
-        (conv) => conv.id === conversation.id
-      );
-      if (existingIndex !== -1) {
-        const updatedConversations = [...prev];
-        updatedConversations[existingIndex] = conversation;
-        return updatedConversations;
-      } else {
-        return [conversation, ...prev];
-      }
-    });
+  const createNewConversation = (title) => {
+    const newConversation = {
+      id: Date.now(),
+      title,
+      messages: [],
+      timestamp: new Date().toISOString(),
+    };
+    setConversations((prev) => [newConversation, ...prev]);
+    setActiveConversationId(newConversation.id);
   };
 
-  const selectConversation = (id) => {
-    setActiveConversationId(id);
-    const activeConversation = conversations.find((conv) => conv.id === id);
-    setMessages(activeConversation ? activeConversation.messages : []);
+  const addMessageToConversation = (conversationId, message) => {
+    setConversations((prev) =>
+      prev.map((conv) =>
+        conv.id === conversationId
+          ? { ...conv, messages: [...conv.messages, message] }
+          : conv
+      )
+    );
   };
 
   const getActiveConversation = () => {
     return conversations.find((conv) => conv.id === activeConversationId);
   };
 
+  const selectConversation = (id) => {
+    setActiveConversationId(id);
+  };
+
+  const startNewConversation = () => {
+    setActiveConversationId(null);
+  };
+
+  const deleteConversation = (id) => {
+    setConversations((prev) => prev.filter((conv) => conv.id !== id));
+    if (activeConversationId === id) {
+      setActiveConversationId(null);
+    }
+  };
+
   return (
     <ConversationsContext.Provider
       value={{
         conversations,
-        addConversation,
-        selectConversation,
+        createNewConversation,
+        addMessageToConversation,
         getActiveConversation,
-        activeConversationId,
+        selectConversation,
         startNewConversation,
-        messages,
-        setMessages,
+        deleteConversation,
+        activeConversationId,
       }}
     >
       {children}

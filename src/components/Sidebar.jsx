@@ -1,6 +1,16 @@
-import { FiPlus, FiMenu } from "react-icons/fi";
+import { FiChevronLeft } from "react-icons/fi";
+import { HiOutlineChatAlt } from "react-icons/hi";
+import Tooltip from "./ui/Tooltip";
 import { useSidebar } from "../context/SidebarContext";
 import { useConversations } from "../context/ConversationsContext";
+import {
+  format,
+  isToday,
+  isYesterday,
+  subDays,
+  isWithinInterval,
+  parseISO,
+} from "date-fns";
 
 function Sidebar() {
   const { isOpen, toggleSidebar } = useSidebar();
@@ -9,49 +19,75 @@ function Sidebar() {
     selectConversation,
     activeConversationId,
     startNewConversation,
+    deleteConversation,
   } = useConversations();
+
+  // Group conversations by date
+  const groupedConversations = groupConversationsByDate(conversations);
 
   return (
     <div
       className={`transition-all duration-300 flex-shrink-0 ${
         isOpen ? "w-64" : "w-0"
-      } bg-chatgpt-light-sidebar dark:bg-chatgpt-dark-sidebar`}
+      } bg-chatgpt-light-sidebar-surface-primary dark:bg-chatgpt-dark-sidebar-surface-primary fixed top-0 left-0 bottom-0 overflow-y-auto z-20`}
     >
       <div className="flex flex-col h-full">
         <div
-          className={`flex items-center justify-between px-4 h-16 transition-opacity duration-300 ${
+          className={`flex items-center justify-between px-4 h-16 ${
             isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
-          <button
-            onClick={toggleSidebar}
-            className="p-2 text-gray-700 dark:text-gray-300"
-          >
-            <FiMenu size={24} />
-          </button>
-          <button
-            onClick={startNewConversation}
-            className="p-2 text-gray-700 dark:text-gray-300"
-          >
-            <FiPlus size={24} />
-          </button>
+          <Tooltip text="Collapse Sidebar" position="bottom">
+            <button
+              onClick={toggleSidebar}
+              className="p-2 text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md"
+            >
+              <FiChevronLeft size={24} />
+            </button>
+          </Tooltip>
+          <Tooltip text="New Chat" position="bottom">
+            <button
+              onClick={startNewConversation}
+              className="p-2 text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md"
+            >
+              <HiOutlineChatAlt size={24} />
+            </button>
+          </Tooltip>
         </div>
         {isOpen && (
-          <div className="flex-1 p-4">
+          <div className="flex-1 p-4 overflow-y-auto">
             <ul>
-              {conversations.map((conv) => (
-                <li key={conv.id}>
-                  <button
-                    onClick={() => selectConversation(conv.id)}
-                    className={`w-full text-left py-2 px-3 rounded hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 ${
-                      activeConversationId === conv.id
-                        ? "bg-gray-300 dark:bg-gray-700"
-                        : ""
-                    }`}
-                  >
-                    {conv.title}
-                  </button>
-                </li>
+              {Object.keys(groupedConversations).map((dateLabel) => (
+                <div key={dateLabel}>
+                  <div className="text-xs text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary my-2">
+                    {dateLabel}
+                  </div>
+                  {groupedConversations[dateLabel].map((conv) => (
+                    <li key={conv.id}>
+                      <button
+                        onClick={() => selectConversation(conv.id)}
+                        className={`w-full flex items-center justify-between py-2 px-3 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary ${
+                          activeConversationId === conv.id
+                            ? "bg-gray-200 dark:bg-gray-700"
+                            : ""
+                        }`}
+                      >
+                        <span>{conv.title}</span>
+                        <Tooltip text="Delete" position="bottom">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteConversation(conv.id);
+                            }}
+                            className="p-1 text-gray-500 hover:text-red-500"
+                          >
+                            <span className="text-sm">&times;</span>
+                          </button>
+                        </Tooltip>
+                      </button>
+                    </li>
+                  ))}
+                </div>
               ))}
             </ul>
           </div>
@@ -59,6 +95,39 @@ function Sidebar() {
       </div>
     </div>
   );
+}
+
+// Helper function to group conversations by date
+function groupConversationsByDate(conversations) {
+  const grouped = {};
+
+  conversations.forEach((conv) => {
+    const date = parseISO(conv.timestamp);
+    let dateLabel = "";
+
+    if (isToday(date)) {
+      dateLabel = "Today";
+    } else if (isYesterday(date)) {
+      dateLabel = "Yesterday";
+    } else if (
+      isWithinInterval(date, {
+        start: subDays(new Date(), 7),
+        end: new Date(),
+      })
+    ) {
+      dateLabel = "Last 7 Days";
+    } else {
+      dateLabel = format(date, "MMM dd, yyyy");
+    }
+
+    if (!grouped[dateLabel]) {
+      grouped[dateLabel] = [];
+    }
+
+    grouped[dateLabel].push(conv);
+  });
+
+  return grouped;
 }
 
 export default Sidebar;

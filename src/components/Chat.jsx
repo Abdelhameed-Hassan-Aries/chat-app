@@ -8,13 +8,12 @@ function Chat() {
   const {
     activeConversationId,
     getActiveConversation,
-    addConversation,
-    selectConversation,
+    createNewConversation,
+    addMessageToConversation,
     startNewConversation,
-    messages,
-    setMessages,
   } = useConversations();
 
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
   const messagesEndRef = useRef(null);
@@ -26,7 +25,7 @@ function Chat() {
   useEffect(() => {
     const activeConversation = getActiveConversation();
     setMessages(activeConversation ? activeConversation.messages : []);
-  }, [activeConversationId]);
+  }, [activeConversationId, getActiveConversation]);
 
   const handleSend = async (initialMessage) => {
     const messageToSend = initialMessage || input;
@@ -34,6 +33,14 @@ function Chat() {
 
     const userMessage = { sender: "user", text: messageToSend };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
+
+    if (activeConversationId) {
+      addMessageToConversation(activeConversationId, userMessage);
+    } else {
+      const title = messageToSend.substring(0, 20);
+      createNewConversation(title);
+      addMessageToConversation(Date.now(), userMessage);
+    }
 
     try {
       const response = await fetch("/api/chat", {
@@ -46,18 +53,7 @@ function Chat() {
       const botResponse = { sender: "bot", text: data.reply };
       setMessages((prevMessages) => [...prevMessages, botResponse]);
 
-      const conversation = {
-        id: activeConversationId || Date.now(),
-        title:
-          messages.length === 0
-            ? messageToSend.substring(0, 20)
-            : messages[0].text.substring(0, 20),
-        messages: [...messages, userMessage, botResponse],
-      };
-      addConversation(conversation);
-      if (!activeConversationId) {
-        selectConversation(conversation.id);
-      }
+      addMessageToConversation(activeConversationId, botResponse);
     } catch (error) {
       console.error(error);
       const botResponse = {
@@ -65,6 +61,8 @@ function Chat() {
         text: "Sorry, there was an error processing your request.",
       };
       setMessages((prevMessages) => [...prevMessages, botResponse]);
+
+      addMessageToConversation(activeConversationId, botResponse);
     } finally {
       setInput("");
     }
@@ -79,14 +77,14 @@ function Chat() {
 
   const startConversation = (text) => {
     startNewConversation();
-    setInput("");
     setMessages([]);
+    setInput("");
     handleSend(text);
   };
 
   return (
-    <div className="flex flex-col flex-1">
-      <div className="flex-1 overflow-y-auto p-4 flex justify-center">
+    <div className="flex flex-col flex-1 bg-chatgpt-light-main-surface-primary dark:bg-chatgpt-dark-main-surface-primary">
+      <div className="flex-1 overflow-y-auto p-4 pt-20 pb-24 flex justify-center">
         <div className="w-full max-w-chat-container">
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center flex-1 p-4">
@@ -95,7 +93,7 @@ function Chat() {
                   <button
                     key={index}
                     onClick={() => startConversation(suggestion)}
-                    className="p-4 bg-chatgpt-light-messageBgBot dark:bg-chatgpt-dark-messageBgBot rounded-lg shadow text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
+                    className="p-4 bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary rounded-lg shadow text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary hover:bg-gray-200 dark:hover:bg-gray-700"
                   >
                     {suggestion}
                   </button>
@@ -110,22 +108,39 @@ function Chat() {
           <div ref={messagesEndRef} />
         </div>
       </div>
-      <div className="p-4 bg-chatgpt-light-inputBg dark:bg-chatgpt-dark-inputBg flex justify-center">
-        <div className="w-full max-w-chat-container flex">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-chatgpt-light-main-surface-primary dark:bg-chatgpt-dark-main-surface-primary flex justify-center">
+        <div className="p-2 w-full max-w-chat-container flex items-center bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary rounded-3xl">
           <Input
             type="text"
-            className="flex-1 rounded-l-md bg-chatgpt-light-inputBg dark:bg-chatgpt-dark-inputBg text-chatgpt-light-inputText dark:text-chatgpt-dark-inputText"
+            className="flex-1 bg-transparent text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary placeholder-chatgpt-light-text-placeholder dark:placeholder-chatgpt-dark-text-placeholder px-4 py-2"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => (e.key === "Enter" ? handleSend() : null)}
             placeholder="Type your message..."
+            style={{ height: "40px", padding: "6px" }}
           />
           <Button
-            className="rounded-r-md"
+            className="w-8 h-8 m-1"
             onClick={() => handleSend()}
             disabled={input.trim() === ""}
           >
-            Send
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 text-gray-800 dark:text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+              style={{
+                transform: "rotate(90deg)",
+              }}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
           </Button>
         </div>
       </div>

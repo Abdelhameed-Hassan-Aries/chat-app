@@ -6,15 +6,15 @@ function Message({ sender, text }) {
     <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}>
       {!isUser && (
         <Avatar className="w-8 h-8 mr-2">
-          <AvatarImage src="/bot-avatar.png" alt="Bot" />
+          <AvatarImage src="/pelcro-logo.svg" alt="Bot" />
           <AvatarFallback>🤖</AvatarFallback>
         </Avatar>
       )}
       <div
         className={`rounded-lg px-4 py-2 max-w-xs ${
           isUser
-            ? "bg-chatgpt-light-messageBgUser dark:bg-chatgpt-dark-messageBgUser text-chatgpt-light-text dark:text-chatgpt-dark-text"
-            : "bg-chatgpt-light-messageBgBot dark:bg-chatgpt-dark-messageBgBot text-chatgpt-light-text dark:text-chatgpt-dark-text"
+            ? "bg-green-500 text-white"
+            : "bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary"
         }`}
       >
         {text}

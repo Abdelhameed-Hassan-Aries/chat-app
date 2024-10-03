@@ -1,14 +1,17 @@
 import React from "react";
 import clsx from "clsx";
 
-const Input = React.forwardRef(({ className, ...props }, ref) => (
+const Input = React.forwardRef(({ className, style, ...props }, ref) => (
   <input
     ref={ref}
     className={clsx(
-      "block w-full px-3 py-2 border border-gray-300 rounded-none rounded-l-md shadow-sm",
-      "placeholder-gray-500 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm",
+      "block w-full px-4 py-2 border-none rounded-none",
+      "bg-transparent text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary",
+      "placeholder-chatgpt-light-text-placeholder dark:placeholder-chatgpt-dark-text-placeholder",
+      "focus:outline-none",
       className
     )}
+    style={{ height: "40px", padding: "6px", ...style }}
     {...props}
   />
 ));

@@ -8,7 +8,7 @@ function App() {
   return (
     <SidebarProvider>
       <ConversationsProvider>
-        <div className="flex h-screen overflow-hidden bg-chatgpt-light-background dark:bg-chatgpt-dark-background">
+        <div className="flex h-screen overflow-hidden bg-chatgpt-light-main-surface-primary dark:bg-chatgpt-dark-main-surface-primary">
           <Sidebar />
           <div className="flex-1 flex flex-col">
             <Navbar />

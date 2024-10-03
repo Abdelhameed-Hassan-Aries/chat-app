@@ -1,4 +1,5 @@
 import { FiSun, FiMoon } from "react-icons/fi";
+import Tooltip from "./ui/Tooltip";
 import useTheme from "../hooks/useTheme";
 
 function ThemeToggle() {
@@ -9,12 +10,14 @@ function ThemeToggle() {
   };
 
   return (
-    <button
-      onClick={toggleTheme}
-      className="p-2 text-gray-700 dark:text-gray-300"
-    >
-      {theme === "dark" ? <FiSun size={24} /> : <FiMoon size={24} />}
-    </button>
+    <Tooltip text="Toggle Theme">
+      <button
+        onClick={toggleTheme}
+        className="p-2 text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md"
+      >
+        {theme === "dark" ? <FiSun size={24} /> : <FiMoon size={24} />}
+      </button>
+    </Tooltip>
   );
 }
 
