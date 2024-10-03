@@ -36,13 +36,16 @@ function Chat() {
     const userMessage = { sender: "user", text: messageToSend };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-    if (activeConversationId) {
-      addMessageToConversation(activeConversationId, userMessage);
-    } else {
+    // Create a new conversation if there is no activeConversationId
+    let conversationId = activeConversationId;
+    if (!conversationId) {
       const title = messageToSend.substring(0, 20);
       createNewConversation(title);
-      addMessageToConversation(Date.now(), userMessage);
+      conversationId = Date.now(); // Generate a unique ID for the new conversation
     }
+
+    // Add the user's message to the conversation
+    addMessageToConversation(conversationId, userMessage);
 
     try {
       const response = await fetch("/api/chat", {
@@ -53,18 +56,19 @@ function Chat() {
 
       const data = await response.json();
       const botResponse = { sender: "bot", text: data.reply };
-      setMessages((prevMessages) => [...prevMessages, botResponse]);
 
-      addMessageToConversation(activeConversationId, botResponse);
+      // Add the bot's response to the conversation
+      setMessages((prevMessages) => [...prevMessages, botResponse]);
+      addMessageToConversation(conversationId, botResponse);
     } catch (error) {
       console.error(error);
       const botResponse = {
         sender: "bot",
         text: "Sorry, there was an error processing your request.",
       };
-      setMessages((prevMessages) => [...prevMessages, botResponse]);
 
-      addMessageToConversation(activeConversationId, botResponse);
+      setMessages((prevMessages) => [...prevMessages, botResponse]);
+      addMessageToConversation(conversationId, botResponse);
     } finally {
       setInput("");
     }
