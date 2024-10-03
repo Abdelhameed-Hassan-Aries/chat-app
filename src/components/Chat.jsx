@@ -3,6 +3,7 @@ import Message from "./Message";
 import Button from "./ui/Button";
 import Input from "./Input";
 import { useConversations } from "../context/ConversationsContext";
+import clsx from "clsx";
 
 function Chat() {
   const {
@@ -18,6 +19,7 @@ function Chat() {
 
   const messagesEndRef = useRef(null);
 
+  // Scroll to the bottom of messages when new messages are added
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -83,11 +85,17 @@ function Chat() {
   };
 
   return (
-    <div className="flex flex-col flex-1 bg-chatgpt-light-main-surface-primary dark:bg-chatgpt-dark-main-surface-primary">
-      <div className="flex-1 overflow-y-auto p-4 pt-20 pb-24 flex justify-center">
-        <div className="w-full max-w-chat-container">
+    <div className="flex flex-col h-screen bg-chatgpt-light-main-surface-primary dark:bg-chatgpt-dark-main-surface-primary">
+      {/* Message list container */}
+      <div className="flex-1 overflow-y-auto p-4 pt-20 pb-24">
+        <div
+          className={clsx(
+            "max-w-chat-container mx-auto",
+            messages.length === 0 ? "h-full" : ""
+          )}
+        >
           {messages.length === 0 ? (
-            <div className="h-full  flex flex-col items-center justify-center flex-1 p-4">
+            <div className="flex h-full flex-col items-center justify-center">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {suggestions.map((suggestion, index) => (
                   <button
@@ -101,17 +109,18 @@ function Chat() {
               </div>
             </div>
           ) : (
-            <div className="overflow-y-auto">
+            <div className="space-y-4">
               {messages.map((msg, index) => (
                 <Message key={index} sender={msg.sender} text={msg.text} />
               ))}
+              <div ref={messagesEndRef} />
             </div>
           )}
-          <div ref={messagesEndRef} />
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-chatgpt-light-main-surface-primary dark:bg-chatgpt-dark-main-surface-primary flex justify-center">
-        <div className="p-2 w-full max-w-chat-container flex items-center bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary rounded-3xl">
+      {/* Input area */}
+      <div className="bottom-0 left-0 right-0 p-4 bg-chatgpt-light-main-surface-primary dark:bg-chatgpt-dark-main-surface-primary">
+        <div className="p-2 w-full max-w-chat-container mx-auto flex items-center bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary rounded-3xl">
           <Input
             type="text"
             className="flex-1 bg-transparent text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary placeholder-chatgpt-light-text-placeholder dark:placeholder-chatgpt-dark-text-placeholder px-4 py-2"

@@ -29,7 +29,7 @@ function Sidebar() {
     <div
       className={`transition-all duration-300 flex-shrink-0 ${
         isOpen ? "w-64" : "w-0"
-      } bg-chatgpt-light-sidebar-surface-primary dark:bg-chatgpt-dark-sidebar-surface-primary fixed top-0 left-0 bottom-0 overflow-y-auto z-20`}
+      } bg-chatgpt-light-sidebar-surface-primary dark:bg-chatgpt-dark-sidebar-surface-primary top-0 left-0 bottom-0 overflow-y-auto z-20`}
     >
       <div className="flex flex-col h-full">
         <div
