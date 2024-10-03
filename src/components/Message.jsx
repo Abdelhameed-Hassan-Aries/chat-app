@@ -2,19 +2,18 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/Avatar";
 import { RiRobot2Fill } from "react-icons/ri";
-import { FiCopy, FiCheck } from "react-icons/fi"; // Import copy and check icons
-import Tooltip from "./ui/Tooltip"; // Assuming you have a Tooltip component
+import { FiCopy, FiCheck } from "react-icons/fi";
+import Tooltip from "./ui/Tooltip";
 
 function Message({ sender, text, isLoading, timestamp }) {
-  const [copied, setCopied] = useState(false); // State to handle copy icon
+  const [copied, setCopied] = useState(false);
   const isUser = sender === "user";
   const formattedTime = timestamp ? format(new Date(timestamp), "h:mm a") : "";
 
-  // Function to copy the text to the clipboard
   const handleCopy = () => {
-    navigator.clipboard.writeText(text); // Copy text to clipboard
-    setCopied(true); // Show the check icon
-    setTimeout(() => setCopied(false), 2000); // Revert back to copy icon after 2 seconds
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -40,7 +39,7 @@ function Message({ sender, text, isLoading, timestamp }) {
           className={`rounded-lg px-4 py-2 text-left shadow-md bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary`}
         >
           {isLoading ? (
-            <div className="flex items-center space-x-2 h-full">
+            <div className="flex items-center space-x-2 h-full min-h-6">
               <span className="dot bg-gray-600 dark:bg-white"></span>
               <span className="dot bg-gray-600 dark:bg-white"></span>
               <span className="dot bg-gray-600 dark:bg-white"></span>
