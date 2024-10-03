@@ -4,6 +4,7 @@ import Button from "./ui/Button";
 import Input from "./Input";
 import { useConversations } from "../context/ConversationsContext";
 import clsx from "clsx";
+import { FaCircleArrowUp } from "react-icons/fa6";
 
 function Chat() {
   const {
@@ -153,23 +154,10 @@ function Chat() {
             onClick={() => handleSend()}
             disabled={input.trim() === "" || loading} // Disable button while loading
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 text-gray-800 dark:text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-              style={{
-                transform: "rotate(90deg)",
-              }}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            <FaCircleArrowUp
+              size={32}
+              className="text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary"
+            />
           </Button>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/Avatar";
+import { RiRobot2Fill } from "react-icons/ri";
 
 function Message({ sender, text, isLoading }) {
   const isUser = sender === "user";
@@ -9,9 +10,14 @@ function Message({ sender, text, isLoading }) {
     >
       {/* Bot Message with Avatar */}
       {!isUser && (
-        <Avatar className="w-8 h-8 mr-2">
+        <Avatar className="w-8 h-8 mr-2 rounded-full bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary">
           <AvatarImage src="/path/to/pelcro-logo.svg" alt="Bot" />
-          <AvatarFallback>🤖</AvatarFallback>
+          <AvatarFallback>
+            <RiRobot2Fill
+              size={24}
+              className="text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary"
+            />
+          </AvatarFallback>
         </Avatar>
       )}
 
