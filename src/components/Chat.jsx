@@ -154,7 +154,6 @@ function Chat() {
         </div>
       </div>
 
-      {/* Input area */}
       <div className="bottom-0 left-0 right-0 p-4 bg-chatgpt-light-main-surface-primary dark:bg-chatgpt-dark-main-surface-primary">
         <div className="p-2 w-full max-w-chat-container mx-auto relative bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary rounded-3xl">
           {/* Input Field */}
