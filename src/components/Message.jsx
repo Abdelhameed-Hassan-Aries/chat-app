@@ -1,10 +1,21 @@
+import { useState } from "react";
 import { format } from "date-fns";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/Avatar";
 import { RiRobot2Fill } from "react-icons/ri";
+import { FiCopy, FiCheck } from "react-icons/fi"; // Import copy and check icons
+import Tooltip from "./ui/Tooltip"; // Assuming you have a Tooltip component
 
 function Message({ sender, text, isLoading, timestamp }) {
+  const [copied, setCopied] = useState(false); // State to handle copy icon
   const isUser = sender === "user";
   const formattedTime = timestamp ? format(new Date(timestamp), "h:mm a") : "";
+
+  // Function to copy the text to the clipboard
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text); // Copy text to clipboard
+    setCopied(true); // Show the check icon
+    setTimeout(() => setCopied(false), 2000); // Revert back to copy icon after 2 seconds
+  };
 
   return (
     <div
@@ -38,13 +49,21 @@ function Message({ sender, text, isLoading, timestamp }) {
             text
           )}
         </div>
-        {/* Display the formatted time below the message */}
+        {/* Display the formatted time and copy button */}
         <div
-          className={`text-xs text-gray-500 dark:text-gray-400 mt-1 ${
-            isUser ? "text-right" : "text-left"
+          className={`flex items-center text-xs text-gray-500 dark:text-gray-400 mt-2 ${
+            isUser ? "justify-end" : "justify-start"
           }`}
         >
-          {formattedTime}
+          <span>{formattedTime}</span>
+          <Tooltip text="Copy" position="bottom">
+            <button
+              onClick={handleCopy}
+              className="ml-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+            >
+              {copied ? <FiCheck size={16} /> : <FiCopy size={16} />}
+            </button>
+          </Tooltip>
         </div>
       </div>
     </div>
