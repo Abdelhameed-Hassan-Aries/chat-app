@@ -1,4 +1,4 @@
-import { FiChevronLeft } from "react-icons/fi";
+import { FiChevronLeft, FiDelete } from "react-icons/fi"; // Import FiDelete
 import { HiOutlineChatAlt } from "react-icons/hi";
 import Tooltip from "./ui/Tooltip";
 import { useSidebar } from "../context/SidebarContext";
@@ -59,11 +59,11 @@ function Sidebar() {
             <ul>
               {Object.keys(groupedConversations).map((dateLabel) => (
                 <div key={dateLabel}>
-                  <div className="text-sm text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary my-2">
+                  <div className="text-sm text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary my-3">
                     {dateLabel}
                   </div>
                   {groupedConversations[dateLabel].map((conv) => (
-                    <li key={conv.id}>
+                    <li key={conv.id} className="mb-2">
                       <button
                         onClick={() => selectConversation(conv.id)}
                         className={`w-full flex items-center justify-between py-2 px-3 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary ${
@@ -74,15 +74,16 @@ function Sidebar() {
                       >
                         <span>{conv.title}</span>
                         <Tooltip text="Delete" position="bottom">
-                          {/* Replace the button with a span styled like a button */}
                           <span
                             onClick={(e) => {
                               e.stopPropagation();
                               deleteConversation(conv.id);
                             }}
-                            className="p-1 text-gray-500 hover:text-red-500 cursor-pointer"
+                            className="flex items-center justify-center p-1 text-gray-500 hover:text-red-500 cursor-pointer" // Flex to center and fix height
+                            style={{ height: "24px", width: "24px" }} // Set explicit size for the icon container
                           >
-                            <span className="text-sm">&times;</span>
+                            <FiDelete size={16} />{" "}
+                            {/* Replaced with FiDelete */}
                           </span>
                         </Tooltip>
                       </button>

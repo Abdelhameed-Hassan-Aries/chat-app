@@ -1,10 +1,12 @@
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/Avatar";
 
-function Message({ sender, text }) {
+function Message({ sender, text, isLoading }) {
   const isUser = sender === "user";
 
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}>
+    <div
+      className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4 gap-2`}
+    >
       {/* Bot Message with Avatar */}
       {!isUser && (
         <Avatar className="w-8 h-8 mr-2">
@@ -21,9 +23,17 @@ function Message({ sender, text }) {
           {text}
         </div>
       ) : (
-        // Bot Message (with no background, only text styling)
+        // Bot Message or Loading Dots
         <div className="max-w-xs text-left text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary">
-          {text}
+          {isLoading ? (
+            <div className="flex items-center space-x-2 h-full">
+              <span className="dot bg-gray-600 dark:bg-white"></span>
+              <span className="dot bg-gray-600 dark:bg-white"></span>
+              <span className="dot bg-gray-600 dark:bg-white"></span>
+            </div>
+          ) : (
+            text
+          )}
         </div>
       )}
     </div>

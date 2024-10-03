@@ -55,3 +55,49 @@ body ::-webkit-scrollbar-thumb {
 body ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.5); /* Darker on hover for light mode */
 }
+
+.loader {
+  border-top-color: #3498db; /* Customize this color */
+  animation: spinner 1s ease-in-out infinite;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #6b7280;
+  animation: dot-bounce 1.2s infinite ease-in-out;
+}
+
+.dot:nth-child(1) {
+  animation-delay: -0.24s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: -0.12s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0s;
+}
+
+@keyframes dot-bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0.8);
+  }
+  40% {
+    transform: scale(1.2);
+  }
+}

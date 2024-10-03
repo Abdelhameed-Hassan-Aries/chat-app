@@ -119,7 +119,16 @@ function Chat() {
           ) : (
             <div className="space-y-4">
               {messages.map((msg, index) => (
-                <Message key={index} sender={msg.sender} text={msg.text} />
+                <Message
+                  key={index}
+                  sender={msg.sender}
+                  text={msg.text}
+                  isLoading={
+                    loading &&
+                    msg.sender === "bot" &&
+                    index === messages.length - 1
+                  }
+                />
               ))}
               <div ref={messagesEndRef} />
             </div>
