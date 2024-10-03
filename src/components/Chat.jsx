@@ -16,6 +16,7 @@ function Chat() {
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false); // New state for loading
 
   const messagesEndRef = useRef(null);
 
@@ -31,7 +32,9 @@ function Chat() {
 
   const handleSend = async (initialMessage) => {
     const messageToSend = initialMessage || input;
-    if (messageToSend.trim() === "") return;
+    if (messageToSend.trim() === "" || loading) return; // Prevent sending if loading or input is empty
+
+    setLoading(true); // Set loading state to true
 
     const userMessage = { sender: "user", text: messageToSend };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
@@ -71,6 +74,7 @@ function Chat() {
       addMessageToConversation(conversationId, botResponse);
     } finally {
       setInput("");
+      setLoading(false); // Set loading state back to false
     }
   };
 
@@ -133,11 +137,12 @@ function Chat() {
             onKeyDown={(e) => (e.key === "Enter" ? handleSend() : null)}
             placeholder="Type your message..."
             style={{ height: "40px", padding: "6px" }}
+            disabled={loading} // Disable input while loading
           />
           <Button
             className="w-8 h-8 m-1"
             onClick={() => handleSend()}
-            disabled={input.trim() === ""}
+            disabled={input.trim() === "" || loading} // Disable button while loading
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

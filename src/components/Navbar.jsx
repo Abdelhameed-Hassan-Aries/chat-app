@@ -14,7 +14,7 @@ function Navbar() {
       <div className="flex items-center">
         {!isOpen && (
           <div className="flex">
-            <Tooltip text="Expand" position="right">
+            <Tooltip text="Expand" position="bottom">
               <button
                 onClick={toggleSidebar}
                 className="p-2 text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md"
