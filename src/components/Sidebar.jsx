@@ -59,7 +59,7 @@ function Sidebar() {
             <ul>
               {Object.keys(groupedConversations).map((dateLabel) => (
                 <div key={dateLabel}>
-                  <div className="text-xs text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary my-2">
+                  <div className="text-sm text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary my-2">
                     {dateLabel}
                   </div>
                   {groupedConversations[dateLabel].map((conv) => (
@@ -74,15 +74,16 @@ function Sidebar() {
                       >
                         <span>{conv.title}</span>
                         <Tooltip text="Delete" position="bottom">
-                          <button
+                          {/* Replace the button with a span styled like a button */}
+                          <span
                             onClick={(e) => {
                               e.stopPropagation();
                               deleteConversation(conv.id);
                             }}
-                            className="p-1 text-gray-500 hover:text-red-500"
+                            className="p-1 text-gray-500 hover:text-red-500 cursor-pointer"
                           >
                             <span className="text-sm">&times;</span>
-                          </button>
+                          </span>
                         </Tooltip>
                       </button>
                     </li>
