@@ -118,7 +118,7 @@ function Chat() {
               </div>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {messages.map((msg, index) => (
                 <Message
                   key={index}

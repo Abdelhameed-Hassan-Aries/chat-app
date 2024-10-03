@@ -6,11 +6,11 @@ function Message({ sender, text, isLoading }) {
 
   return (
     <div
-      className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4 gap-2`}
+      className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4 gap-3`}
     >
       {/* Bot Message with Avatar */}
       {!isUser && (
-        <Avatar className="w-8 h-8 mr-2 rounded-full bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary">
+        <Avatar className="w-8 h-8 flex-shrink-0 rounded-full bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary">
           <AvatarImage src="/path/to/pelcro-logo.svg" alt="Bot" />
           <AvatarFallback>
             <RiRobot2Fill
@@ -24,13 +24,13 @@ function Message({ sender, text, isLoading }) {
       {/* Message content (User or Bot) */}
       {isUser ? (
         <div
-          className={`rounded-lg px-4 py-2 max-w-xs text-left shadow-md bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary`}
+          className={`rounded-lg px-4 py-2 text-left shadow-md bg-chatgpt-light-main-surface-secondary dark:bg-chatgpt-dark-main-surface-secondary text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary`}
         >
           {text}
         </div>
       ) : (
         // Bot Message or Loading Dots
-        <div className="max-w-xs text-left text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary">
+        <div className="text-left text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary">
           {isLoading ? (
             <div className="flex items-center space-x-2 h-full">
               <span className="dot bg-gray-600 dark:bg-white"></span>
