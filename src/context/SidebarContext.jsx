@@ -8,6 +8,7 @@ export function SidebarProvider({ children }) {
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleSidebar = () => setIsOpen((prev) => !prev);
+  const closeSidebar = () => setIsOpen(false);
 
   useEffect(() => {
     if (isSmallScreen) {
@@ -16,7 +17,7 @@ export function SidebarProvider({ children }) {
   }, [isSmallScreen]);
 
   return (
-    <SidebarContext.Provider value={{ isOpen, toggleSidebar }}>
+    <SidebarContext.Provider value={{ isOpen, toggleSidebar, closeSidebar }}>
       {children}
     </SidebarContext.Provider>
   );

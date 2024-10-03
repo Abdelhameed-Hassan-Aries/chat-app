@@ -1,4 +1,5 @@
-import { FiChevronLeft, FiDelete } from "react-icons/fi"; // Import FiDelete
+import { useIsSmallScreen } from "../hooks/useIsSmallScreen";
+import { FiChevronLeft, FiDelete } from "react-icons/fi";
 import { HiOutlineChatAlt } from "react-icons/hi";
 import Tooltip from "./ui/Tooltip";
 import { useSidebar } from "../context/SidebarContext";
@@ -13,7 +14,7 @@ import {
 } from "date-fns";
 
 function Sidebar() {
-  const { isOpen, toggleSidebar } = useSidebar();
+  const { isOpen, toggleSidebar, closeSidebar } = useSidebar(); // Add closeSidebar if you want to explicitly close it after selection
   const {
     conversations,
     selectConversation,
@@ -22,13 +23,33 @@ function Sidebar() {
     deleteConversation,
   } = useConversations();
 
+  const isSmallScreen = useIsSmallScreen();
+
   // Group conversations by date
   const groupedConversations = groupConversationsByDate(conversations);
+
+  const handleSelectConversation = (conversationId) => {
+    selectConversation(conversationId);
+
+    // Collapse sidebar on small screens after selecting a conversation
+    if (isSmallScreen) {
+      closeSidebar();
+    }
+  };
+
+  const handleStartNewConversation = () => {
+    startNewConversation();
+
+    // Collapse sidebar on small screens after starting a new conversation
+    if (isSmallScreen) {
+      closeSidebar();
+    }
+  };
 
   return (
     <div
       className={`transition-all duration-300 flex-shrink-0 ${
-        isOpen ? "w-64" : "w-0"
+        isOpen ? (isSmallScreen ? "w-full" : "w-64") : "w-0"
       } bg-chatgpt-light-sidebar-surface-primary dark:bg-chatgpt-dark-sidebar-surface-primary top-0 left-0 bottom-0 overflow-y-auto z-20`}
     >
       <div className="flex flex-col h-full">
@@ -47,7 +68,7 @@ function Sidebar() {
           </Tooltip>
           <Tooltip text="New Chat" position="bottom">
             <button
-              onClick={startNewConversation}
+              onClick={handleStartNewConversation}
               className="p-2 text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md"
             >
               <HiOutlineChatAlt size={24} />
@@ -65,7 +86,7 @@ function Sidebar() {
                   {groupedConversations[dateLabel].map((conv) => (
                     <li key={conv.id} className="mb-2">
                       <button
-                        onClick={() => selectConversation(conv.id)}
+                        onClick={() => handleSelectConversation(conv.id)}
                         className={`w-full flex items-center justify-between py-2 px-3 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-chatgpt-light-text-primary dark:text-chatgpt-dark-text-primary ${
                           activeConversationId === conv.id
                             ? "bg-gray-200 dark:bg-gray-700"
@@ -79,11 +100,10 @@ function Sidebar() {
                               e.stopPropagation();
                               deleteConversation(conv.id);
                             }}
-                            className="flex items-center justify-center p-1 text-gray-500 hover:text-red-500 cursor-pointer" // Flex to center and fix height
-                            style={{ height: "24px", width: "24px" }} // Set explicit size for the icon container
+                            className="flex items-center justify-center p-1 text-gray-500 hover:text-red-500 cursor-pointer"
+                            style={{ height: "24px", width: "24px" }}
                           >
-                            <FiDelete size={16} />{" "}
-                            {/* Replaced with FiDelete */}
+                            <FiDelete size={16} />
                           </span>
                         </Tooltip>
                       </button>

@@ -1,10 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useSidebar } from "./SidebarContext"; // Import sidebar context to toggle sidebar
+import { useIsSmallScreen } from "../hooks/useIsSmallScreen"; // Import your hook
 
 const ConversationsContext = createContext();
 
 export function ConversationsProvider({ children }) {
   const [conversations, setConversations] = useState([]);
   const [activeConversationId, setActiveConversationId] = useState(null);
+
+  const { closeSidebar } = useSidebar(); // Get closeSidebar from SidebarContext
+  const isSmallScreen = useIsSmallScreen(); // Get screen size
 
   useEffect(() => {
     const storedConversations = JSON.parse(
@@ -26,6 +31,24 @@ export function ConversationsProvider({ children }) {
     };
     setConversations((prev) => [newConversation, ...prev]);
     setActiveConversationId(newConversation.id);
+
+    if (isSmallScreen) {
+      closeSidebar(); // Collapse sidebar if screen is small
+    }
+  };
+
+  const selectConversation = (id) => {
+    setActiveConversationId(id);
+    if (isSmallScreen) {
+      closeSidebar(); // Collapse sidebar on small screens after selecting a conversation
+    }
+  };
+
+  const startNewConversation = () => {
+    setActiveConversationId(null);
+    if (isSmallScreen) {
+      closeSidebar(); // Collapse sidebar when starting new conversation on small screens
+    }
   };
 
   const addMessageToConversation = (conversationId, message) => {
@@ -42,14 +65,6 @@ export function ConversationsProvider({ children }) {
     return conversations.find((conv) => conv.id === activeConversationId);
   };
 
-  const selectConversation = (id) => {
-    setActiveConversationId(id);
-  };
-
-  const startNewConversation = () => {
-    setActiveConversationId(null);
-  };
-
   const deleteConversation = (id) => {
     setConversations((prev) => prev.filter((conv) => conv.id !== id));
     if (activeConversationId === id) {
@@ -64,8 +79,8 @@ export function ConversationsProvider({ children }) {
         createNewConversation,
         addMessageToConversation,
         getActiveConversation,
-        selectConversation,
         startNewConversation,
+        selectConversation,
         deleteConversation,
         activeConversationId,
       }}
